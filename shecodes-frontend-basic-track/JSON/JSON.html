@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet"  href="JSON.css"/>
+<meta charset="UTF-8">
+<title>To-Do App</title>
+
+
+</head>
+
+<body>
+
+<h2>To-Do List</h2>
+
+<div class="input-box">
+  <input type="text" id="taskInput" placeholder="Enter task">
+  <button onclick="addTask()">Add</button>
+</div>
+
+<ul id="taskList"></ul>
+
+<script>
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+
+displayTasks();
+
+function addTask() {
+
+  let input = document.getElementById("taskInput");
+  let task = input.value;
+
+  if (task === "") {
+    alert("Please enter a task!");
+    return;
+  }
+
+  tasks.push(task);
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+ 
+  displayTasks();
+
+  input.value = "";
+}
+
+function displayTasks() {
+
+  let taskList = document.getElementById("taskList");
+
+  taskList.innerHTML = "";
+
+  for (let i = 0; i < tasks.length; i++) {
+
+    taskList.innerHTML += `
+      <li>
+        ${tasks[i]}
+        <button class="delete-btn" onclick="deleteTask(${i})">
+          Delete
+        </button>
+      </li>
+    `;
+  }
+}
+
+function deleteTask(index) {
+
+  tasks.splice(index, 1);
+
+ 
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+
+  displayTasks();
+}
+
+</script>
+
+</body>
+</html>
